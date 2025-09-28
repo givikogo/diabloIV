@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Наследие Князя Тьмы — Приглашение</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* ====== Базовая сцена ====== */
+    :root {
+      --bg1: #000000;
+      --bg2: #0b0a0a;
+      --blood: #8a0000;
+      --ember: #ff3b3b;
+      --ash: #c9c5c5;
+      --veil: rgba(0,0,0,0.85);
+      --glow: drop-shadow(0 0 10px #8a0000);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: radial-gradient(1200px 700px at 50% 20%, var(--bg2), var(--bg1));
+      color: var(--ash);
+      font-family: "Cinzel", "Trajan Pro", serif;
+      overflow-x: hidden;
+    }
+
+    /* ====== Фоновый дым ====== */
+    .smoke {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(60% 40% at 50% 60%, rgba(60,0,0,0.15), transparent 60%),
+                  radial-gradient(50% 50% at 20% 40%, rgba(255,255,255,0.05), transparent 60%),
+                  radial-gradient(40% 40% at 80% 30%, rgba(255,255,255,0.05), transparent 60%);
+      filter: blur(8px);
+      animation: breathe 12s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(1) translateY(0); opacity: 0.7; }
+      50% { transform: scale(1.05) translateY(-10px); opacity: 0.9; }
+    }
+
+    /* ====== Header ====== */
+    header {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 30px 20px 10px;
+      border-bottom: 1px solid rgba(138,0,0,0.4);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0));
+    }
+    header .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      filter: var(--glow);
+    }
+    header img {
+      height: 84px; width: 84px; object-fit: contain;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      letter-spacing: 0.08em;
+      color: #c83535;
+      text-shadow: 0 0 18px #300, 0 0 4px #511;
+    }
+    header .subtitle {
+      margin-top: 6px;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    /* ====== Легенда и цитаты ====== */
+    .scroll {
+      position: relative;
+      z-index: 2;
+      max-width: 920px;
+      margin: 24px auto;
+      padding: 22px 24px;
+      border: 1px solid rgba(138,0,0,0.45);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(20,0,0,0.6), rgba(8,0,0,0.55));
+      box-shadow: 0 0 28px rgba(138,0,0,0.25);
+    }
+    .scroll h2 {
+      margin: 0 0 10px;
+      color: #ff4444;
+      font-size: 1.4rem;
+      letter-spacing: 0.05em;
+    }
+    .mantra, .oath-block {
+      text-align: center;
+      font-style: italic;
+      line-height: 1.7;
+      opacity: 0.95;
+    }
+    .oath-verse {
+      margin-top: 12px;
+      font-weight: 600;
+      color: #e9dede;
+    }
+
+    /* ====== Список ценностей ====== */
+    .tenets {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 12px 20px;
+      margin-top: 18px;
+      list-style: none;
+      padding: 0;
+    }
+    .tenets li {
+      background: rgba(45,0,0,0.45);
+      border: 1px solid rgba(138,0,0,0.4);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex; align-items: flex-start; gap: 10px;
+      filter: drop-shadow(0 0 6px rgba(138,0,0,0.3));
+    }
+    .tenets code {
+      color: #ff6a6a;
+      font-family: "Cinzel", serif;
+    }
+
+    /* ====== Свечи ====== */
+    .altar {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 28px auto 6px;
+    }
+    .candle {
+      position: relative;
+      width: 14px;
+      height: 42px;
+      background: linear-gradient(180deg, #2b1515, #0d0505);
+      border: 1px solid #3a0000;
+      border-radius: 4px;
+      box-shadow: 0 0 12px rgba(255,0,0,0.08);
+    }
+    .flame {
+      position: absolute;
+      top: -18px; left: 50%;
+      transform: translateX(-50%);
+      width: 10px; height: 18px;
+      background: radial-gradient(50% 50% at 50% 30%, #ffeb96, #ff6a00 60%, rgba(255,0,0,0) 100%);
+      border-radius: 50% 50% 50% 50%;
+      filter: drop-shadow(0 0 10px #ff5b3b);
+      animation: flicker 1.2s infinite ease-in-out;
+    }
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1); opacity: 1; }
+      30% { transform: translateX(-50%) scale(1.05) translateY(-1px); opacity: 0.95; }
+      52% { transform: translateX(-52%) scale(0.98) translateY(1px); opacity: 0.9; }
+      78% { transform: translateX(-49%) scale(1.08); opacity: 0.96; }
+      100% { transform: translateX(-50%) scale(1); opacity: 1; }
+    }
+
+    /* ====== Ритуал клятвы ====== */
+    .ritual {
+      position: relative;
+      z-index: 2;
+      max-width: 920px;
+      margin: 14px auto 30px;
+      padding: 18px 22px;
+      border: 1px solid rgba(138,0,0,0.45);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(12,0,0,0.65), rgba(8,0,0,0.55));
+      box-shadow: 0 0 24px rgba(138,0,0,0.2);
+    }
+    .ritual h3 {
+      margin: 0 0 12px;
+      color: #ff4040;
+      letter-spacing: 0.06em;
+      font-size: 1.2rem;
+    }
+
+    .oath-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 16px;
+      align-items: center;
+    }
+    .oath-form .full {
+      grid-column: 1 / -1;
+    }
+    .oath-input {
+      background: rgba(25,0,0,0.6);
+      border: 1px solid rgba(138,0,0,0.5);
+      border-radius: 8px;
+      color: #e6dcdc;
+      padding: 10px 12px;
+      font-size: 1rem;
+      outline: none;
+      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .oath-input:focus {
+      box-shadow: 0 0 12px rgba(255,64,64,0.25);
+      border-color: #ff4040;
+    }
+    .oath-check {
+      display: flex; align-items: center; gap: 10px;
+      user-select: none;
+    }
+    .oath-check input { accent-color: #8a0000; width: 18px; height: 18px; }
+
+    /* ====== Кнопки ====== */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .btn {
+      appearance: none;
+      border: 1px solid #8a0000;
+      background: linear-gradient(180deg, #2a0000, #120000);
+      color: #f0e6e6;
+      padding: 11px 16px;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.25s ease;
+      filter: drop-shadow(0 0 6px rgba(255,0,0,0.2));
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 0 16px rgba(255,64,64,0.3); }
+    .btn:active { transform: translateY(0); }
+    .btn.secondary { border-color: #430000; color: #e3d0d0; opacity: 0.9; }
+
+    /* Discord кнопка: блокирована до клятвы */
+    .discord-btn {
+      pointer-events: none;
+      opacity: 0.35;
+      border-color: #4d0000;
+    }
+    .discord-btn.active {
+      pointer-events: auto;
+      opacity: 1;
+      border-color: #ff3b3b;
+      animation: pulse 1.5s infinite;
+      background: linear-gradient(180deg, #3a0000, #170000);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 8px rgba(255,0,0,0.2); }
+      50% { box-shadow: 0 0 24px rgba(255,0,0,0.35); }
+      100% { box-shadow: 0 0 8px rgba(255,0,0,0.2); }
+    }
+
+    /* ====== Печать Князя (сигил) ====== */
+    .sigil {
+      position: fixed;
+      z-index: 3;
+      left: 50%; top: 52%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      border: 1px solid rgba(138,0,0,0.5);
+      background:
+        radial-gradient(60% 60% at 50% 50%, rgba(255,0,0,0.06), rgba(0,0,0,0) 70%),
+        conic-gradient(from 0deg, rgba(255,64,64,0.15), rgba(255,64,64,0.05), rgba(255,64,64,0.15));
+      filter: drop-shadow(0 0 18px rgba(255,0,0,0.25));
+      display: none;
+      overflow: hidden;
+    }
+    .sigil::before, .sigil::after {
+      content: "";
+      position: absolute; inset: 18px;
+      border: 1px dashed rgba(255,64,64,0.25);
+      border-radius: 50%;
+      animation: rotate 8s linear infinite;
+    }
+    .sigil::after { inset: 34px; animation-duration: 12s; opacity: 0.7; }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .sigil .mark {
+      position: absolute; inset: 0;
+      display: grid; place-items: center;
+      color: #ff4444;
+      font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-size: 0.86rem;
+      opacity: 0.9;
+      text-shadow: 0 0 10px #a00;
+    }
+
+    /* ====== Вуаль ритуала ====== */
+    .veil {
+      position: fixed; inset: 0; z-index: 4;
+      display: none; align-items: center; justify-content: center;
+      background: var(--veil);
+      backdrop-filter: blur(3px);
+      text-align: center;
+      color: #ff4a4a;
+      animation: fadeIn 300ms ease-out forwards;
+    }
+    .veil .incant {
+      max-width: 680px;
+      padding: 16px;
+      line-height: 1.7;
+      font-style: italic;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+
+    /* ====== Footer ====== */
+    footer {
+      position: relative; z-index: 2;
+      text-align: center;
+      padding: 18px 12px 32px;
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+
+    /* ====== Адаптив ====== */
+    @media (max-width: 800px) {
+      .tenets { grid-template-columns: 1fr; }
+      .oath-form { grid-template-columns: 1fr; }
+      .altar { gap: 22px; }
+      .sigil { width: 180px; height: 180px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Дым сцены -->
+  <div class="smoke" aria-hidden="true"></div>
+
+  <!-- Header: место под иконку клана -->
+  <header>
+    <div class="brand">
+      <!-- Вставь свою иконку: clan-ico.png -->
+      <img src="clan-ico.png" alt="Иконка клана «Князь Тьмы»" />
+      <div>
+        <h1>Наследие Князя Тьмы</h1>
+        <div class="subtitle">В каждом из нас — искра древнего проклятия</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Свиток легенды -->
+  <section class="scroll" aria-label="Легенда и ценности клана">
+    <h2>📜 Наследие</h2>
+    <p class="mantra">Мы не просто воины. Мы — наследие Князя Тьмы.</p>
+    <p class="oath-block oath-verse">Его воля — наша клятва. Его тень — наш путь. Мы не подчиняемся свету — мы его пожираем.</p>
+
+    <ul class="tenets">
+      <li>🩸 <code>PVE/PvP-рейды</code> — охота на элиту, зачистка подземелий</li>
+      <li>🔥 <code>Вторжения и события</code> — ролевые миссии, внутренняя мифология</li>
+      <li>🕯️ <code>Поддержка новичков</code> — наставничество, обряд посвящения</li>
+      <li>⚔️ <code>Стратегическая дисциплина</code> — ранговая система, командование</li>
+    </ul>
+    <p style="text-align:center; margin-top:12px;"><em>Прими свою тьму. Стань голосом Князя.</em></p>
+  </section>
+
+  <!-- Свечи -->
+  <div class="altar" aria-hidden="true">
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+  </div>
+
+  <!-- Ритуал принятия клятвы -->
+  <section class="ritual" id="ritual" aria-label="Ритуал принятия клятвы">
+    <h3>🕯️ Ритуал клятвы</h3>
+    <form class="oath-form" id="oathForm" autocomplete="off">
+      <div class="full">
+        <label for="acolyte" class="sr-only">Имя служителя тьмы</label>
+        <input id="acolyte" name="acolyte" class="oath-input" type="text" placeholder="Назови своё имя во тьме…" required />
+      </div>
+      <div class="oath-check full">
+        <input id="pledge" name="pledge" type="checkbox" required />
+        <label for="pledge">Я принимаю волю Князя Тьмы и клянусь служить его тени.</label>
+      </div>
+
+      <div class="btn-row full">
+        <button type="button" id="holdBtn" class="btn secondary" aria-live="polite" title="Удерживай, чтобы запечатать клятву">Удерживай для печати (3 сек.)</button>
+        <button type="button" id="discordBtn" class="btn discord-btn" title="Доступ откроется после печати клятвы">
+          🔗 Войти в Discord
+        </button>
+      </div>
+    </form>
+    <p style="margin-top:10px; opacity:0.9; font-size:0.95rem;">Без принятия клятвы переход в Discord невозможен.</p>
+  </section>
+
+  <!-- Печать Князя -->
+  <div class="sigil" id="sigil" aria-hidden="true">
+    <div class="mark">KNYAZ' DARK</div>
+  </div>
+
+  <!-- Вуаль ритуала -->
+  <div class="veil" id="veil" role="dialog" aria-modal="true" aria-label="Печать клятвы">
+    <div class="incant">
+      Ты принял клятву. Добро пожаловать во тьму.
+      <br />Твой голос — часть Проклятия. Твой шаг — тропа Князя.
+    </div>
+  </div>
+
+  <footer>
+    2025 © Клан «Князь Тьмы». Ты не просто вступаешь. Ты становишься частью проклятия.
+  </footer>
+
+  <script>
+    // ====== Элементы ======
+    const acolyte = document.getElementById('acolyte');
+    const pledge = document.getElementById('pledge');
+    const holdBtn = document.getElementById('holdBtn');
+    const discordBtn = document.getElementById('discordBtn');
+    const sigil = document.getElementById('sigil');
+    const veil = document.getElementById('veil');
+
+    // ====== Настройки ======
+    const DISCORD_URL = 'https://discord.gg/zWFPzyEc';
+    const HOLD_SECONDS = 3;
+    const STORAGE_KEY = 'knyaz_oath_accepted';
+
+    // ====== Аудио: гул тьмы через WebAudio ======
+    let audioCtx;
+    function playRitualHum(duration = 3.2) {
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.value = 58; // низкое рычание
+        gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.3);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration + 0.05);
+      } catch (e) { /* без звука — без паники */ }
+    }
+
+    // ====== Пометка принятой клятвы ======
+    function markOathAccepted(name) {
+      const data = { name, at: Date.now() };
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e){}
+      discordBtn.classList.add('active');
+      discordBtn.classList.remove('discord-btn');
+      discordBtn.setAttribute('aria-label', 'Войти в Discord');
+      holdBtn.textContent = 'Клятва запечатана';
+      holdBtn.disabled = true;
+      // Показ печати
+      sigil.style.display = 'block';
+      veil.style.display = 'flex';
+      setTimeout(() => {
+        veil.style.display = 'none';
+        // мягкое растворение печати
+        sigil.style.transition = 'opacity 1.5s ease';
+        sigil.style.opacity = '0';
+        setTimeout(() => { sigil.style.display = 'none'; sigil.style.opacity = '1'; }, 1600);
+      }, 1800);
+    }
+
+    // ====== Проверка локального статуса ======
+    (function init() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (saved && saved.name) {
+          discordBtn.classList.add('active');
+          discordBtn.classList.remove('discord-btn');
+          holdBtn.textContent = 'Клятва ранее запечатана';
+          holdBtn.disabled = true;
+        }
+      } catch(e){}
+    })();
+
+    // ====== Механика удержания ======
+    let holdTimer = null;
+    let holdProgress = 0;
+    function startHold() {
+      if (!acolyte.value.trim() || !pledge.checked) {
+        holdBtn.textContent = 'Назови имя и отметь клятву';
+        holdBtn.classList.add('shake');
+        setTimeout(() => holdBtn.classList.remove('shake'), 600);
+        return;
+      }
+      playRitualHum(HOLD_SECONDS + 0.4);
+      const name = acolyte.value.trim();
+      holdProgress = 0;
+      holdBtn.textContent = `Печать… (${HOLD_SECONDS}s)`;
+      holdBtn.disabled = true;
+      sigil.style.display = 'block';
+      // плавная анимация прогресса удержания
+      holdTimer = setInterval(() => {
+        holdProgress++;
+        const left = HOLD_SECONDS - Math.floor(holdProgress / 10);
+        holdBtn.textContent = `Печать… (${left}s)`;
+        if (holdProgress >= HOLD_SECONDS * 10) {
+          clearInterval(holdTimer);
+          holdTimer = null;
+          markOathAccepted(name);
+        }
+      }, 100);
+    }
+    function cancelHold() {
+      if (holdTimer) {
+        clearInterval(holdTimer);
+        holdTimer = null;
+        holdBtn.textContent = 'Удерживай для печати (3 сек.)';
+        holdBtn.disabled = false;
+        sigil.style.display = 'none';
+      }
+    }
+
+    // Удержание мышью/тачем
+    holdBtn.addEventListener('mousedown', startHold);
+    holdBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startHold(); }, { passive: false });
+    document.addEventListener('mouseup', cancelHold);
+    document.addEventListener('touchend', cancelHold);
+
+    // ====== Кнопка Discord ======
+    discordBtn.addEventListener('click', () => {
+      if (discordBtn.classList.contains('active')) {
+        window.open(DISCORD_URL, '_blank', 'noopener');
+      }
+    });
+
+    // ====== Доп. микродвижение шкуры ======
+    // небольшой параллакс при движении курсора
+    document.addEventListener('mousemove', (e) => {
+      const { innerWidth: w, innerHeight: h } = window;
+      const x = (e.clientX / w - 0.5) * 2;
+      const y = (e.clientY / h - 0.5) * 2;
+      document.body.style.backgroundPosition = `${50 + x * 2}% ${50 + y * 1.5}%`;
+    });
+  </script>
+</body>
+</html>
