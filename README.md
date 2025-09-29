@@ -1,1 +1,1 @@
-# diabloIV
+# diabloIV clan
